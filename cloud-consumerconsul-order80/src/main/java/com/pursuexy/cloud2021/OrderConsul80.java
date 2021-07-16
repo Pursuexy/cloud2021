@@ -3,13 +3,11 @@ package com.pursuexy.cloud2021;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableEurekaClient
-public class Payment8001 {
+public class OrderConsul80 {
     public static void main(String[] args) {
-        SpringApplication.run(Payment8001.class, args);
+        SpringApplication.run(OrderConsul80.class, args);
     }
 }

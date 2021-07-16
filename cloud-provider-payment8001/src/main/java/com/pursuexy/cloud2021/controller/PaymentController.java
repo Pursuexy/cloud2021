@@ -5,9 +5,11 @@ import com.pursuexy.cloud2021.entities.Payment;
 import com.pursuexy.cloud2021.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,6 +25,9 @@ public class PaymentController {
     @Value("${server.port}")
     private String serverPort;
 
+    @Resource
+    private DiscoveryClient discoveryClient;
+
     @PostMapping(value = "/payment/create")
     public CommonResult create(@RequestBody Payment payment) {
         int result = paymentService.create(payment);
@@ -34,6 +39,21 @@ public class PaymentController {
             return new CommonResult(444, "插入数据库失败", null);
         }
     }
+
+    @GetMapping("/payment/discovery")
+    public Object discovery() {
+        List<String> services = discoveryClient.getServices();
+        for (String service : services) {
+            log.info("element", service);
+        }
+        List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
+        for (ServiceInstance instance : instances) {
+            log.info("服务名称相同的下各端口的想信息" + instance.getInstanceId()
+                    +"\t"+ instance.getHost() +"\t"+ instance.getPort()+"\t"+instance.getUri());
+        }
+        return discoveryClient;
+    }
+
 
     @GetMapping(value = "/payment/get/{id}")
     public CommonResult<Payment> getPaymentById(@PathVariable("id") Long id) {

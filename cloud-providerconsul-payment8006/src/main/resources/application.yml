@@ -1,0 +1,12 @@
+server:
+  port: 8006
+spring:
+  application:
+    name: cloud-provider-payment
+  cloud:
+    consul:
+      discovery:
+        service-name: ${spring.application.name}
+        health-check-tls-skip-verify: true
+      host: 192.168.137.134
+      port: 8500
