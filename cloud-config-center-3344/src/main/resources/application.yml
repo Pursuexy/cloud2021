@@ -1,0 +1,66 @@
+server:
+  port: 3344
+
+spring:
+  application:
+    name:  cloud-config-center #注册进Eureka服务器的微服务名
+  #rabbitmq相关配置 15672是Web管理界面的端口；5672是MQ访问的端口
+  rabbitmq:
+    host: 192.168.137.134
+    port: 5672
+    username: admin
+    password: 123
+  cloud:
+    config:
+      server:
+        git:
+          username: Pursuexy
+          password: 636490XYFxyf@
+          force-pull: true
+#          uri: git@github.com:Pursuexy/springcloud-config.git  #GitHub上面的git仓库名字
+          uri: https://github.com/Pursuexy/springcloud-config.git  #GitHub上面的git仓库名字
+          search-paths: ####搜索目录
+            - springcloud-config
+          private-key:
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            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
+            -----END OPENSSH PRIVATE KEY-----
+      label: master
+
+#服务注册到eureka地址
+eureka:
+  client:
+    service-url:
+      register-with-eureka: true     #false表示不向注册中心注册自己。
+      fetch-registry: true     #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
+      defaultZone: http://localhost:7001/eureka/
+##rabbitmq相关配置,暴露bus刷新配置的端点
+management:
+  endpoints: #暴露bus刷新配置的端点
+    web:
+      exposure:
+        include: 'bus-refresh'
